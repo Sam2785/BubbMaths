@@ -723,9 +723,14 @@ footer {
   .review-text { font-size:12px; }
 
   /* TRUSTPILOT BANNER */
-  div[style*="padding:28px 48px"] { padding:20px 16px !important; gap:16px !important; }
-  div[style*="gap:40px;flex-wrap:wrap"] { gap:12px !important; }
-  div[style*="font-size:52px"] { font-size:36px !important; }
+  div[style*="padding:28px 48px"] { padding:14px 16px !important; }
+  div[style*="gap:40px;flex-wrap:wrap"] { gap:10px !important; justify-content:center !important; }
+  div[style*="font-size:52px"] { font-size:28px !important; }
+  div[style*="font-size:24px;font-weight:700;color:#fff"] { font-size:18px !important; }
+  div[style*="width:44px;"][style*="height:44px"] { display:none !important; }
+  /* Show smaller stars instead */
+  div[style*="display:flex;gap:6px"] svg { width:28px !important; height:28px !important; }
+  div[style*="width:1px;height:48px"] { height:32px !important; }
 
   /* CONTACT */
   .contact-info h3 { font-size:20px; }
@@ -898,7 +903,7 @@ footer {
 <section class="reviews-section" id="reviews">
   <div class="section-tag" style="color:rgba(184,149,42,.7)">Testimonials</div>
   <h2 class="section-title reveal">Trusted by Students<br><em style="color:var(--gold)">& Parents</em></h2>
-  <div class="reviews-track-wrapper reveal">
+  <div class="reviews-track-wrapper">
     <div class="reviews-track" id="reviewsTrack">
       <!-- duplicated for infinite scroll -->
     </div>
@@ -1355,7 +1360,7 @@ function hideMapTooltip() {
 /* ───────── RENDER REVIEWS ───────── */
 function renderReviews() {
   const track = document.getElementById('reviewsTrack');
-  const all = [...reviews, ...reviews]; // duplicate for infinite scroll
+  const all = [...reviews, ...reviews];
   track.innerHTML = all.map(r => `
     <div class="review-card">
       <div class="review-stars">★★★★★</div>
@@ -1364,6 +1369,10 @@ function renderReviews() {
       <div class="review-date">${r.date}</div>
     </div>
   `).join('');
+  // Restart animation after content renders
+  track.style.animation = 'none';
+  track.offsetHeight; // force reflow
+  track.style.animation = '';
 }
 
 /* ───────── MODAL ───────── */
