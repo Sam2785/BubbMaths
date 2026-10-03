@@ -642,21 +642,110 @@ footer {
   nav { padding:0 24px; top:32px; }
   .nav-links { display:none; }
   .hamburger { display:flex; }
-  .hero { padding:100px 24px 60px; }
-  .hero-inner { flex-direction:column; gap:40px; }
+  .hero { padding:110px 24px 60px; }
+  .hero-inner { flex-direction:column; gap:32px; }
   .hero-map { display:none; }
-  section { padding:72px 24px; }
-  .tutors-grid { grid-template-columns:repeat(2,1fr); }
+  .hero h1 { font-size:clamp(38px,10vw,64px); }
+  div[style*="position:absolute;top:18%;left:0;width:65%"] { display:none !important; }
+  section { padding:56px 24px; }
+  .tutors-grid { grid-template-columns:repeat(2,1fr); gap:14px; }
   footer { padding:36px 24px; flex-direction:column; align-items:flex-start; }
   .modal-header { flex-direction:column; align-items:flex-start; padding:32px 24px 20px; }
   .modal-body { padding:24px; }
   .modal-actions { flex-direction:column; }
+  .contact-grid { grid-template-columns:1fr; gap:40px; }
+  .why-grid { grid-template-columns:1fr; }
+  .why-card { border-right:none; border-bottom:1px solid #2a2a2a; }
+  .why-card:last-child { border-bottom:none; }
+  .modal-stats { grid-template-columns:1fr 1fr; }
+  .reviews-track { animation:scroll-reviews 20s linear infinite; }
+  .footer-links { flex-wrap:wrap; gap:16px; }
+  /* Why/how two-column inline grid */
+  div[style*="grid-template-columns:1fr 1fr;gap:80px"] {
+    grid-template-columns:1fr !important;
+    gap:48px !important;
+  }
 }
+
 @media(max-width:600px){
-  .hero-stats { gap:28px; }
+  /* NAV */
+  nav { top:28px; padding:0 16px; }
+  .top-banner { height:28px; font-size:10px; }
+  .top-banner-item { font-size:10px; padding:0 14px; }
+
+  /* HERO */
+  .hero { padding:96px 16px 48px; }
+  .hero h1 { font-size:clamp(30px,8.5vw,44px); line-height:1.05; }
+  .hero-sub { font-size:13px; line-height:1.65; margin-top:14px; }
+  .hero-actions { flex-direction:column; gap:10px; margin-top:0; }
+  .btn-primary, .btn-outline { width:100%; text-align:center; padding:13px 20px; font-size:11px; }
+  /* Covering pill */
+  div[style*="margin-top:32px"] > div[style*="inline-flex"] { font-size:13px !important; padding:10px 14px !important; }
+  /* Min grade */
+  div[style*="margin-top:32px"] > p { font-size:12px !important; padding:5px 12px !important; }
+
+  /* SECTIONS */
+  section { padding:44px 16px; }
+  .section-title { font-size:clamp(26px,7vw,38px); }
+  .section-sub { font-size:13px; }
+
+  /* TUTORS */
+  .tutors-grid { grid-template-columns:1fr; gap:12px; }
+  .tutor-card-top { padding:18px 18px 14px; }
+  .tutor-tags { padding:0 18px 14px; }
+  .tutor-card-footer { padding:12px 18px; }
+  .tutor-name { font-size:19px; }
+  .tutor-uni { font-size:10px; }
+
+  /* WHY SECTION */
+  .why-grid { gap:0; }
+  .why-card { border-right:none; border-bottom:1px solid #2a2a2a; padding:28px 20px; }
+  .why-card:last-child { border-bottom:none; }
+  .why-num { font-size:40px; margin-bottom:12px; }
+
+  /* HOW/WHY COMBINED - inline grid */
+  div[style*="grid-template-columns:1fr 1fr;gap:80px"] {
+    grid-template-columns:1fr !important;
+    gap:40px !important;
+    padding:0 !important;
+  }
+  /* Checklist cards inside why section */
+  div[style*="padding:24px;border:1px solid #2a2a2a"] { padding:16px !important; }
+
+  /* STEPS */
   .steps { grid-template-columns:1fr; }
-  .step { border-right:none; border-bottom:1px solid var(--border); }
+  .step { border-right:none; border-bottom:1px solid var(--border); padding:28px 20px; }
   .step:last-child { border-bottom:none; }
+  .step-num { font-size:48px; }
+
+  /* REVIEWS */
+  .review-card { width:250px; padding:20px 22px; }
+  .review-text { font-size:12px; }
+
+  /* TRUSTPILOT BANNER */
+  div[style*="padding:28px 48px"] { padding:20px 16px !important; gap:16px !important; }
+  div[style*="gap:40px;flex-wrap:wrap"] { gap:12px !important; }
+  div[style*="font-size:52px"] { font-size:36px !important; }
+
+  /* CONTACT */
+  .contact-info h3 { font-size:20px; }
+  .contact-item { gap:10px; }
+  .form-row input, .form-row select, .form-row textarea { font-size:16px; } /* prevents iOS zoom */
+
+  /* MODAL */
+  .modal { margin:8px; max-height:96vh; border-radius:4px; }
+  .modal-name { font-size:24px; }
+  .modal-stats { grid-template-columns:1fr 1fr; gap:8px; }
+  .modal-stat { padding:12px; }
+  .modal-stat-value { font-size:13px; }
+  .modal-actions { flex-direction:column; gap:10px; }
+  .modal-quote { font-size:15px; }
+  .modal-bio { font-size:13px; }
+
+  /* FOOTER */
+  .footer-links { display:none; }
+  .footer-copy { font-size:10px; }
+  footer { gap:16px; padding:28px 16px; }
 }
 </style>
 </head>
