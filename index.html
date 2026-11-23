@@ -1129,7 +1129,8 @@ const tutorPhotos = {
   batur: 'images/batur.jpg',
   finn: 'images/finn.jpg',
   ollie: 'images/ollie.jpg',
-  kaylee: 'images/kaylee.png',
+  kaylee: 'images/kaylee.jpg',
+  ed: 'images/ed.jpg',
 };
 
 const tutors = [
@@ -1226,6 +1227,7 @@ const tutors = [
     id: 'ed',
     name: 'Ed',
     initials: 'E',
+    photo: tutorPhotos.ed,
     uni: 'University of Bath',
     degree: 'Mathematics (3rd Year)',
     price: '£35/hr',
@@ -1397,7 +1399,7 @@ const mapTutors = {
   bath: [
     { name: 'Oscar Bubb', initials: 'OB', photo: tutorPhotos.oscar },
     { name: 'Rob Sloan', initials: 'RS', photo: tutorPhotos.rob },
-    { name: 'Ed', initials: 'E', photo: null },
+    { name: 'Ed', initials: 'E', photo: tutorPhotos.ed },
     { name: 'Batur Gunen', initials: 'BG', photo: tutorPhotos.batur },
     { name: 'Finn Phillips', initials: 'FP', photo: tutorPhotos.finn },
     { name: 'Oliver Porter', initials: 'OP', photo: tutorPhotos.ollie },
@@ -1616,14 +1618,7 @@ async function handleFormSubmit(e) {
   if (gotcha) {
     // Honeypot field was filled in — almost certainly a bot. Pretend to
     // succeed (don't tip it off) without actually sending anything.
-    clearEnquiryForm();
-    btn.textContent = 'Sent! We\'ll be in touch.';
-    btn.style.background = 'var(--gold)';
-    setTimeout(() => {
-      btn.textContent = 'Send Enquiry';
-      btn.style.background = '';
-      btn.disabled = false;
-    }, 4000);
+    showEnquirySuccess('', '');
     return;
   }
 
@@ -1660,14 +1655,7 @@ async function handleFormSubmit(e) {
       });
     }
 
-    clearEnquiryForm();
-    btn.textContent = 'Sent! We\'ll be in touch.';
-    btn.style.background = 'var(--gold)';
-    setTimeout(() => {
-      btn.textContent = 'Send Enquiry';
-      btn.style.background = '';
-      btn.disabled = false;
-    }, 4000);
+    showEnquirySuccess(name, email);
 
   } catch (err) {
     // Formspree failed (quota, outage, network issue) — fall back to mailto
@@ -1682,6 +1670,30 @@ async function handleFormSubmit(e) {
       btn.disabled = false;
     }, 4000);
   }
+}
+
+// Replaces the form with a confirmation that stays on screen.
+// "Send another enquiry" restores a fresh, empty form.
+let enquiryFormHTML = null;
+function showEnquirySuccess(name, email) {
+  const box = document.querySelector('.contact-form');
+  if (!box) return;
+  if (enquiryFormHTML === null) enquiryFormHTML = box.innerHTML;
+  const firstName = (name || '').split(' ')[0];
+  box.innerHTML = `
+    <div role="status" aria-live="polite" style="padding:40px 32px;border:1px solid var(--gold);border-radius:4px;background:var(--gold-pale);text-align:center;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:44px;color:var(--gold);line-height:1;margin-bottom:12px;">&#10003;</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--dark);margin-bottom:12px;">Thanks<span id="enquiryThanksName"></span>, we've got your enquiry.</h3>
+      <p style="font-size:14px;color:var(--text-mid);line-height:1.7;margin-bottom:24px;">We'll reply by email soon<span id="enquiryThanksEmail"></span>. If you don't hear back, check your spam folder or email <a href="mailto:bubbmaths@gmail.com" style="color:var(--gold);">bubbmaths@gmail.com</a>.</p>
+      <button type="button" class="btn-outline" style="background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;" onclick="resetEnquiryForm()">Send another enquiry</button>
+    </div>`;
+  // Set user-typed values as text, not HTML
+  if (firstName) document.getElementById('enquiryThanksName').textContent = ' ' + firstName;
+  if (email) document.getElementById('enquiryThanksEmail').textContent = ' at ' + email;
+}
+function resetEnquiryForm() {
+  const box = document.querySelector('.contact-form');
+  if (box && enquiryFormHTML !== null) box.innerHTML = enquiryFormHTML;
 }
 
 function clearEnquiryForm() {
