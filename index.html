@@ -27,7 +27,9 @@
 <meta name="twitter:description" content="Online maths tutoring for 11 Plus, GCSE and A-Level from top Bath and Nottingham students.">
 <meta name="twitter:image" content="https://bubbmaths.com/images/og-share.jpg">
 <!-- Favicon -->
-<link rel="icon" href="images/favicon.png">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="512x512" href="/images/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <!-- Structured data -->
 <script type="application/ld+json">
 {
@@ -1107,7 +1109,7 @@ footer {
     <li><a href="#why">About</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <span class="footer-copy">© 2025 BubbMaths. All rights reserved.</span>
+  <span class="footer-copy">© 2026 BubbMaths. All rights reserved.</span>
 </footer>
 
 <!-- MODAL -->
@@ -1173,7 +1175,7 @@ const tutors = [
       { label: 'A-Level Maths', value: 'A' },
       { label: 'Experience', value: '1+ Year' },
     ],
-    tags: ['GCSE','A-Level','Mechanics','1st Class','Years Exp'],
+    tags: ['GCSE','A-Level','Mechanics','1st Class','1+ yrs exp'],
     email: '',
   },
       {
@@ -1233,7 +1235,7 @@ const tutors = [
     price: '£35/hr',
     priceNote: 'GCSE rate - contact for A-Level / 11 Plus',
     quote: "I'm dedicated and approachable, leading engaging lessons that help GCSE students build confidence and reach their potential.",
-    bio: "A 2nd-year Mathematics student at the University of Bath. Ed achieved A* in both A-Level Maths and Further Maths and brings a calm, methodical style to tutoring. He excels at breaking down complex topics into manageable steps.",
+    bio: "A 3rd-year Mathematics student at the University of Bath. Ed achieved A* in both A-Level Maths and Further Maths and brings a calm, methodical style to tutoring. He excels at breaking down complex topics into manageable steps.",
     stats: [
       { label: 'A-Level Maths', value: 'A*' },
       { label: 'A-Level Further Maths', value: 'A*' },
@@ -1535,8 +1537,8 @@ Thanks`
     </div>
     <p class="modal-bio">${t.bio}</p>
     <div class="modal-actions">
-      <a href="${bookLink}" class="modal-book">Book a Session with ${firstName}</a>
-      <a href="${tasterLink}" class="modal-enquire">Free Taster Call</a>
+      <a href="${bookLink}" class="modal-book" data-cta="book_session" data-tutor="${t.id}">Book a Session with ${firstName}</a>
+      <a href="${tasterLink}" class="modal-enquire" data-cta="free_taster" data-tutor="${t.id}">Free Taster Call</a>
     </div>
   `;
 
@@ -1660,6 +1662,7 @@ async function handleFormSubmit(e) {
   } catch (err) {
     // Formspree failed (quota, outage, network issue) — fall back to mailto
     console.warn('Formspree submission failed, falling back to mailto:', err);
+    trackContactClick('form_fallback', '');
     sendViaMailto(name, email, level, subject, message);
     clearEnquiryForm();
     btn.textContent = 'Opening your email app...';
@@ -1703,6 +1706,23 @@ function clearEnquiryForm() {
   document.getElementById('enquirySubject').value = '';
   document.getElementById('enquiryMessage').value = '';
 }
+
+/* ───────── GA4: EMAIL-LINK CLICKS ───────── */
+// Counts clicks on any mailto link. A click means the visitor's email app
+// opened - not that they sent the email. No personal data is sent.
+function trackContactClick(type, tutor) {
+  if (typeof gtag !== 'function') return;
+  gtag('event', 'contact_click', {
+    contact_type: type,
+    tutor_id: tutor || 'none',
+    transport_type: 'beacon'
+  });
+}
+document.addEventListener('click', function(e) {
+  const a = e.target.closest && e.target.closest('a[href^="mailto:"]');
+  if (!a) return;
+  trackContactClick(a.dataset.cta || 'email_link', a.dataset.tutor || '');
+});
 
 /* ───────── INIT ───────── */
 renderBanner();
